@@ -1,0 +1,80 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Upload Images</h1>
+  <div>
+    <a href="/deposits/<%= deposit._id %>" class="btn btn-info me-2">
+      <i class="fas fa-eye me-2"></i> View Deposit
+    </a>
+    <a href="/deposits" class="btn btn-outline-secondary">
+      <i class="fas fa-arrow-left me-2"></i> Back to Deposits
+    </a>
+  </div>
+</div>
+
+<div class="alert alert-info">
+  <i class="fas fa-info-circle me-2"></i> 
+  Please take clear pictures of the device, ensuring all barcodes and text are clearly visible.
+  The system will attempt to automatically extract serial numbers and device information.
+</div>
+
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Upload Device Images</h5>
+      </div>
+      <div class="card-body">
+        <form action="/deposits/<%= deposit._id %>/upload" method="POST" enctype="multipart/form-data">
+          <div class="form-group mb-4">
+            <label for="images" class="form-label">Select Images (JPG, PNG, GIF)</label>
+            <input 
+              type="file" 
+              id="images" 
+              name="images" 
+              class="form-control" 
+              accept="image/jpeg,image/png,image/gif" 
+              multiple
+              required 
+            />
+            <div class="form-text">You can upload up to 10 images. Maximum size: 10MB per image.</div>
+          </div>
+          
+          <div class="form-group mb-4">
+            <label for="description" class="form-label">Image Description</label>
+            <input 
+              type="text" 
+              id="description" 
+              name="description" 
+              class="form-control"
+              placeholder="Optional description for these images"
+            />
+          </div>
+          
+          <!-- Hidden field to pass depositId -->
+          <input type="hidden" name="depositId" value="<%= deposit._id %>" />
+          
+          <!-- Image Preview -->
+          <div class="mb-4">
+            <label class="form-label">Image Preview</label>
+            <div id="image-preview" class="border rounded p-3 bg-light">
+              <p class="text-center text-muted mb-0">
+                <i class="fas fa-camera me-2"></i> 
+                Selected images will appear here
+              </p>
+            </div>
+          </div>
+          
+          <!-- Submit Button -->
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-upload me-2"></i> Upload Images
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %> 

@@ -1,0 +1,92 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Register New Installator</h1>
+  <a href="/users/manage" class="btn btn-outline-secondary">
+    <i class="fas fa-arrow-left me-2"></i> Back to Users
+  </a>
+</div>
+
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Create New User Account</h5>
+      </div>
+      <div class="card-body">
+        <% if(typeof errors != 'undefined'){ %>
+          <% errors.forEach(function(error) { %>
+            <div class="alert alert-danger alert-dismissible fade show">
+              <%= error.msg %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          <% }); %>
+        <% } %>
+        
+        <form action="/users/register" method="POST">
+          <div class="form-group mb-3">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              placeholder="Enter Full Name"
+              value="<%= typeof name != 'undefined' ? name : '' %>"
+              required
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="Enter Email"
+              value="<%= typeof email != 'undefined' ? email : '' %>"
+              required
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label for="role">Role</label>
+            <select id="role" name="role" class="form-select">
+              <option value="installator" <%= typeof role != 'undefined' && role === 'installator' ? 'selected' : '' %>>Installator</option>
+              <option value="admin" <%= typeof role != 'undefined' && role === 'admin' ? 'selected' : '' %>>Administrator</option>
+            </select>
+          </div>
+          <div class="form-group mb-3">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Create Password"
+              required
+            />
+            <div class="form-text">Password must be at least 6 characters</div>
+          </div>
+          <div class="form-group mb-4">
+            <label for="password2">Confirm Password</label>
+            <input
+              type="password"
+              id="password2"
+              name="password2"
+              class="form-control"
+              placeholder="Confirm Password"
+              required
+            />
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-user-plus me-2"></i> Register User
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %> 

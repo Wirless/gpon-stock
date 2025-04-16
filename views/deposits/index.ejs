@@ -1,0 +1,125 @@
+<%- include('../partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>All Deposits</h1>
+  <a href="/deposits/create" class="btn btn-primary">
+    <i class="fas fa-plus me-2"></i> Create New Deposit
+  </a>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-6">
+        <h5 class="mb-0">Device Deposits</h5>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group">
+          <input type="text" class="form-control" id="search-deposits" placeholder="Search deposits...">
+          <button class="btn btn-outline-secondary" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <% if(deposits && deposits.length > 0) { %>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Created By</th>
+              <th>Device Info</th>
+              <th>Images</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% deposits.forEach(deposit => { %>
+              <tr>
+                <td><%= deposit._id %></td>
+                <td><%= deposit.createdBy.name %></td>
+                <td>
+                  <% if(deposit.deviceInfo.model) { %>
+                    <strong>Model:</strong> <%= deposit.deviceInfo.model %><br>
+                  <% } %>
+                  <% if(deposit.serialNumbers.productionSN) { %>
+                    <strong>S/N:</strong> <%= deposit.serialNumbers.productionSN %><br>
+                  <% } %>
+                  <% if(deposit.serialNumbers.gponSN) { %>
+                    <strong>GPON:</strong> <%= deposit.serialNumbers.gponSN %>
+                  <% } %>
+                </td>
+                <td>
+                  <span class="badge bg-secondary"><%= deposit.images.length %></span>
+                </td>
+                <td><%= new Date(deposit.createdAt).toLocaleDateString() %></td>
+                <td>
+                  <span class="badge status-badge status-<%= deposit.status %>">
+                    <%= deposit.status.charAt(0).toUpperCase() + deposit.status.slice(1) %>
+                  </span>
+                </td>
+                <td>
+                  <div class="btn-group">
+                    <a href="/deposits/<%= deposit._id %>" class="btn btn-sm btn-info" title="View">
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <% if (deposit.createdBy._id.toString() === user._id.toString() || user.role === 'admin') { %>
+                      <a href="/deposits/<%= deposit._id %>/edit" class="btn btn-sm btn-warning" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                    <% } %>
+                    <% if (user.role === 'admin') { %>
+                      <button 
+                        class="btn btn-sm btn-danger" 
+                        onclick="confirmDelete('/deposits/<%= deposit._id %>', 'deposit')" 
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    <% } %>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <div class="text-center py-5">
+        <p class="mb-3">No deposits found.</p>
+        <a href="/deposits/create" class="btn btn-primary">
+          <i class="fas fa-plus me-2"></i> Create Your First Deposit
+        </a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  // Basic client-side search functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-deposits');
+    if (searchInput) {
+      searchInput.addEventListener('keyup', function() {
+        const searchText = this.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr');
+        
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          if (text.indexOf(searchText) > -1) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %> 

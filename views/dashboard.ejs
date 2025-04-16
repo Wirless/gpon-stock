@@ -1,0 +1,129 @@
+<%- include('partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Dashboard</h1>
+  <a href="/deposits/create" class="btn btn-primary">
+    <i class="fas fa-plus me-2"></i> Create New Deposit
+  </a>
+</div>
+
+<!-- Stats Cards -->
+<div class="row mb-5">
+  <% if (user.role === 'admin') { %>
+    <div class="col-md-3">
+      <div class="card stat-card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Total Users</h5>
+          <h2 class="display-6"><%= userStats.totalUsers || 0 %></h2>
+          <p class="text-muted">System users</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stat-card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Installators</h5>
+          <h2 class="display-6"><%= userStats.totalInstallators || 0 %></h2>
+          <p class="text-muted">Active installators</p>
+        </div>
+      </div>
+    </div>
+  <% } %>
+  <div class="col-md-<%= user.role === 'admin' ? '3' : '4' %>">
+    <div class="card stat-card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Total Deposits</h5>
+        <h2 class="display-6"><%= userStats.totalDeposits || 0 %></h2>
+        <p class="text-muted">All device deposits</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-<%= user.role === 'admin' ? '3' : '4' %>">
+    <div class="card stat-card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Pending</h5>
+        <h2 class="display-6"><%= userStats.pendingDeposits || 0 %></h2>
+        <p class="text-muted">Awaiting processing</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-<%= user.role === 'admin' ? '3' : '4' %>">
+    <div class="card stat-card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Processed</h5>
+        <h2 class="display-6"><%= userStats.processedDeposits || 0 %></h2>
+        <p class="text-muted">Completed deposits</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-<%= user.role === 'admin' ? '3' : '4' %>">
+    <div class="card stat-card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Rejected</h5>
+        <h2 class="display-6"><%= userStats.rejectedDeposits || 0 %></h2>
+        <p class="text-muted">Rejected deposits</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Deposits -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Recent Deposits</h5>
+        <a href="/deposits" class="btn btn-sm btn-outline-primary">View All</a>
+      </div>
+      <div class="card-body">
+        <% if(recentDeposits && recentDeposits.length > 0) { %>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Created By</th>
+                  <th>Device Info</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% recentDeposits.forEach(deposit => { %>
+                  <tr>
+                    <td><%= deposit._id %></td>
+                    <td><%= deposit.createdBy.name %></td>
+                    <td>
+                      <% if(deposit.deviceInfo.model) { %>
+                        <strong>Model:</strong> <%= deposit.deviceInfo.model %><br>
+                      <% } %>
+                      <% if(deposit.serialNumbers.productionSN) { %>
+                        <strong>S/N:</strong> <%= deposit.serialNumbers.productionSN %>
+                      <% } %>
+                    </td>
+                    <td><%= new Date(deposit.createdAt).toLocaleDateString() %></td>
+                    <td>
+                      <span class="badge status-badge status-<%= deposit.status %>">
+                        <%= deposit.status.charAt(0).toUpperCase() + deposit.status.slice(1) %>
+                      </span>
+                    </td>
+                    <td>
+                      <a href="/deposits/<%= deposit._id %>" class="btn btn-sm btn-info">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        <% } else { %>
+          <p class="text-center py-4">No deposits found. Create your first deposit!</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %> 

@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+
+<div class="jumbotron py-5 bg-light text-center">
+  <h1 class="display-4">Stock Management System</h1>
+  <p class="lead">Efficiently manage device deposits and track device information with barcode scanning</p>
+  <hr class="my-4">
+  <p>Please log in to access the system</p>
+  <a class="btn btn-primary btn-lg" href="/users/login" role="button">
+    <i class="fas fa-sign-in-alt me-2"></i> Login
+  </a>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-4">
+    <div class="card dashboard-card mb-4">
+      <div class="card-body text-center">
+        <i class="fas fa-barcode fa-4x mb-3 text-primary"></i>
+        <h3 class="card-title">Barcode Scanning</h3>
+        <p class="card-text">Scan device barcodes directly from images. The system will automatically extract production serial numbers, GPON information, and MAC addresses.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card dashboard-card mb-4">
+      <div class="card-body text-center">
+        <i class="fas fa-camera fa-4x mb-3 text-primary"></i>
+        <h3 class="card-title">Image Processing</h3>
+        <p class="card-text">Take pictures of devices and upload them to the system. The images are stored securely and can be accessed anytime.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card dashboard-card mb-4">
+      <div class="card-body text-center">
+        <i class="fas fa-tasks fa-4x mb-3 text-primary"></i>
+        <h3 class="card-title">Deposit Management</h3>
+        <p class="card-text">Create and manage deposit tickets for each device. Track device status and maintain a complete history.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %> 
